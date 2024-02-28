@@ -1,18 +1,24 @@
 package com.cafe.com.cafe.pojo;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @NamedQuery(name = "User.findByEmailid", query = "select u from User u where u.email=:email")
 
-@Data
+@Getter
+@Setter
 @Entity
 @DynamicInsert
 @DynamicUpdate
 @Table(name = "User")
-public class User {
+public class User implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
