@@ -5,16 +5,14 @@ import com.exam.examserver.Entity.User;
 import com.exam.examserver.Entity.UserRole;
 import com.exam.examserver.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin("*")
 public class UserController {
 
     @Autowired
@@ -30,8 +28,15 @@ public class UserController {
         userRole.setRole(role);
         roleSet.add(userRole);
         return this.userService.createUser(user,roleSet);
-        //https://youtu.be/8SXZPr4bKbs?list=PL0zysOflRCel5kT-AiGyy5oMabnlilkIS&t=875
     }
-    
 
+    @GetMapping("/{username}")
+    public User getUser(@PathVariable("username") String username) {
+        return this.userService.getUser(username);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable("id") Long id) {
+        this.userService.deleteUser(id);
+    }
 }

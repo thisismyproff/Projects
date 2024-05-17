@@ -27,7 +27,7 @@ public class UserServerImplementation implements UserService {
         boolean isDuplicate = (this.userRepository.findUserByUsername(user.getUsername())!=null);
         if (isDuplicate) {
             log.error("User is Duplicate");
-            return null;
+            throw new RuntimeException("Something went wrong");
         } else {
             User local = this.userRepository.findUserByUsername(user.getUsername());
             for(UserRole userRole: userRoles) {
@@ -37,5 +37,15 @@ public class UserServerImplementation implements UserService {
             local=this.userRepository.save(user);
             return local;
         }
+    }
+
+    @Override
+    public User getUser(String username) {
+        return this.userRepository.findUserByUsername(username);
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        this.userRepository.deleteById(id);
     }
 }

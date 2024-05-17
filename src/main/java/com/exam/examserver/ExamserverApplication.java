@@ -25,5 +25,22 @@ public class ExamserverApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println("Starting");
+//		User user = new User();
+//		user.setName("Mayur Joshi");
+//		user.setUsername("May1");
+//		user.setPassword("pass123");
+//		user.setEmail("abc@gmail.com");
+//
+//		Role role=new Role();
+//		role.setRoleId(44L);
+//		role.setRoleName("ADMIN");
+//		Set<UserRole> userRoleSet =new HashSet<>();
+//		UserRole userRole = new UserRole();
+//		userRole.setRole(role);
+//		userRole.setUser(user);
+//		userRoleSet.add(userRole);
+//		this.userService.createUser(user,userRoleSet);
+
+
 	}
 }

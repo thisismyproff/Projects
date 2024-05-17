@@ -7,4 +7,7 @@ import java.util.Set;
 
 public interface UserService {
     public User createUser (User user, Set<UserRole> userRole);
+
+    public User getUser (String username);
+    public void deleteUser(Long id);
 }

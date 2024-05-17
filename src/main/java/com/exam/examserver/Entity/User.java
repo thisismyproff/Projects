@@ -1,6 +1,7 @@
 package com.exam.examserver.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -9,7 +10,7 @@ import java.util.Set;
 @Entity
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
     private String password;
@@ -20,6 +21,7 @@ public class User {
     private String profile;
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "user")
+    @JsonIgnore
     private Set<UserRole> userRoles=new HashSet<>();
 
     public User() {
