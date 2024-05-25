@@ -1,5 +1,6 @@
 package com.exam.examserver.Services.Implementations;
 
+import com.exam.examserver.Entity.UserErrorResponse;
 import com.exam.examserver.Services.UserService;
 import com.exam.examserver.Entity.User;
 import com.exam.examserver.Entity.UserRole;
@@ -27,7 +28,7 @@ public class UserServerImplementation implements UserService {
         boolean isDuplicate = (this.userRepository.findUserByUsername(user.getUsername())!=null);
         if (isDuplicate) {
             log.error("User is Duplicate");
-            throw new RuntimeException("Something went wrong");
+            return new UserErrorResponse("Username is already taken",1);
         } else {
             User local = this.userRepository.findUserByUsername(user.getUsername());
             for(UserRole userRole: userRoles) {
