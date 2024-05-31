@@ -1,6 +1,7 @@
 package com.exam.examserver.Entity.Exam;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Quiz {
 
     @Id
@@ -25,8 +27,7 @@ public class Quiz {
     private Integer maxMarks;
     private Integer numberOfQuestions;
     private boolean active = false;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
     @OneToMany(mappedBy = "quiz" , fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
