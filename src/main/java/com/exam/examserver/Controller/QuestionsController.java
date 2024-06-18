@@ -42,6 +42,14 @@ public class QuestionsController {
         return ResponseEntity.ok(questionsSet);
 
     }
+    @GetMapping("/quiz/all/{quizId}")
+    public ResponseEntity<?> getAllQuestionsofQuiz(@PathVariable("quizId") Long id) {
+        Quiz quiz=new Quiz();
+        quiz.setQuizId(id);
+        Set<Questions> questionsSet = this.questionsService.getQuestionsOfQuiz(quiz);
+        return ResponseEntity.ok(questionsSet);
+
+    }
     @GetMapping("/{questionId}")
     public ResponseEntity<Questions> getQuestions(@PathVariable("questionId") Long id) {
         return ResponseEntity.ok(this.questionsService.getQuestions(id));

@@ -2,12 +2,14 @@ package com.exam.examserver.Controller;
 
 
 
+import com.exam.examserver.Entity.Exam.Category;
 import com.exam.examserver.Entity.Exam.Quiz;
 import com.exam.examserver.Services.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -43,6 +45,15 @@ public class QuizController {
     @GetMapping("/{quizId}")
     public Quiz getQuiz(@PathVariable("quizId") Long id) {
         return this.quizService.getQuiz(id);
+    }
+
+    @GetMapping("/category/{categoryId}")
+    public List<Quiz> getQuizesFromCategory (@PathVariable("categoryId") Long categoryId) {
+
+        Category category = new Category();
+        category.setCategoryId(categoryId);
+
+        return this.quizService.getQuizesOfCategory(category);
     }
 
 
