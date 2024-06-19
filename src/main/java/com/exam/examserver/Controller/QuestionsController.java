@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/questions")
@@ -25,6 +26,27 @@ public class QuestionsController {
     public ResponseEntity<Questions> addQuestions(@RequestBody Questions questions) {
         return ResponseEntity.ok(this.questionsService.addQuestions(questions));
     }
+    @PostMapping("/result")
+    public ResponseEntity<?> getResult(@RequestBody List<Questions> questionsSet) {
+        Quiz quiz  = this.quizService.getQuiz(Long.parseLong(String.valueOf(questionsSet.get(0).getQuiz().getQuizId())));
+        int correctAnswers=0;
+        int marks=0;
+        List<Questions> answerKey= new ArrayList<>(quiz.getQuestions());
+        Map<Long,String> correctAnswerMap =  new HashMap<>();
+        for (Questions questions:answerKey) {
+            correctAnswerMap.put(questions.getQuestionId(),questions.getAnswer());
+        }
+        for (Questions questions:questionsSet) {
+            if (questions.getGivenAnswer().equalsIgnoreCase(correctAnswerMap.get(questions.getQuestionId()))) {
+                correctAnswers = correctAnswers + 1;
+                marks = marks + quiz.getMaxMarks() / questionsSet.size();
+            }
+        }
+        quiz.setMarksAcquired(marks);
+        quiz.setCorrectAnswers(correctAnswers);
+        return ResponseEntity.ok(quiz);
+
+    }
 
     @PutMapping("/")
     public ResponseEntity<Questions> updateQuestions(@RequestBody Questions questions) {
@@ -39,6 +61,9 @@ public class QuestionsController {
         if (questionsSet.size()>quiz.getNumberOfQuestions()) {
             questionsSet = questionsSet.subList(0, quiz.getNumberOfQuestions()+1);
         }
+        questionsSet=questionsSet.stream().peek(
+                questions -> questions.setAnswer(null)
+        ).collect(Collectors.toList());
         return ResponseEntity.ok(questionsSet);
 
     }

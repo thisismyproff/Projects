@@ -29,4 +29,7 @@ public class Questions {
     private String answer;
     @ManyToOne(fetch = FetchType.EAGER)
     private Quiz quiz;
+    @Transient
+    private String givenAnswer;
+
 }

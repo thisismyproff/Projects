@@ -32,5 +32,9 @@ public class Quiz {
     @OneToMany(mappedBy = "quiz" , fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Questions> questions = new HashSet<>();
+    @Transient
+    private int correctAnswers =0;
+    @Transient
+    private int marksAcquired =0;
 
 }
