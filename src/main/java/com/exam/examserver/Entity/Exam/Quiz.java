@@ -27,6 +27,7 @@ public class Quiz {
     private Integer maxMarks;
     private Integer numberOfQuestions;
     private boolean active = false;
+    private long attempts;
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
     @OneToMany(mappedBy = "quiz" , fetch = FetchType.LAZY, cascade = CascadeType.ALL)

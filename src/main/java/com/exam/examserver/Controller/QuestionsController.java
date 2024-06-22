@@ -42,7 +42,9 @@ public class QuestionsController {
                 marks = marks + quiz.getMaxMarks() / questionsSet.size();
             }
         }
-        quiz.setMarksAcquired(marks);
+        quiz.setAttempts(quiz.getAttempts()+1);
+        this.quizService.updateQuiz(quiz);
+        quiz.setMarksAcquired(marks*100/quiz.getMaxMarks());
         quiz.setCorrectAnswers(correctAnswers);
         return ResponseEntity.ok(quiz);
 
