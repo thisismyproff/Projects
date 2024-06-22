@@ -38,6 +38,11 @@ public class UserController {
         roleSet.add(userRole);
         return this.userService.createUser(user,roleSet);
     }
+    @PutMapping("/")
+    public User updateUser(@RequestBody User user) {
+        user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
+        return this.userService.updateUser(user);
+    }
 
     @GetMapping("/{username}")
     public User getUser(@PathVariable("username") String username) {

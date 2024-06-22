@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -23,6 +25,7 @@ public class UserServerImplementation implements UserService {
 
     @Autowired
     private RoleRepository roleRepository;
+
     @Override
     public User createUser(User user, Set<UserRole> userRoles) {
         boolean isDuplicate = (this.userRepository.findUserByUsername(user.getUsername())!=null);
@@ -30,7 +33,7 @@ public class UserServerImplementation implements UserService {
             log.error("User is Duplicate");
             return new UserErrorResponse("Username is already taken",1);
         } else {
-            User local = this.userRepository.findUserByUsername(user.getUsername());
+            User local;
             for(UserRole userRole: userRoles) {
                 roleRepository.save(userRole.getRole());
             }
@@ -40,6 +43,22 @@ public class UserServerImplementation implements UserService {
         }
     }
 
+    @Override
+    public User updateUser(User user) {
+        List<User> dupliUser = this.userRepository.findByUsername(user.getUsername());
+        boolean isDuplicate = false;
+        for (User userDup: dupliUser) {
+            if (!Objects.equals(userDup.getId(), user.getId())) {
+                isDuplicate=true;
+                break;
+            }
+        }
+        if (isDuplicate) {
+            log.error("User is Duplicate");
+            return new UserErrorResponse("Username is already taken",1);
+        }
+        return this.userRepository.save(user);
+    }
     @Override
     public User getUser(String username) {
         return this.userRepository.findUserByUsername(username);
