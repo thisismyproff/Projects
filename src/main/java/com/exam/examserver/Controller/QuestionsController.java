@@ -2,10 +2,16 @@ package com.exam.examserver.Controller;
 
 import com.exam.examserver.Entity.Exam.Questions;
 import com.exam.examserver.Entity.Exam.Quiz;
+import com.exam.examserver.Entity.Exam.QuizResponse;
+import com.exam.examserver.Entity.User;
 import com.exam.examserver.Services.QuestionsService;
+import com.exam.examserver.Services.QuizResponseService;
 import com.exam.examserver.Services.QuizService;
+import com.exam.examserver.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -20,6 +26,12 @@ public class QuestionsController {
     private QuestionsService questionsService;
 
     @Autowired
+    private QuizResponseService quizResponseService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
     private QuizService quizService;
 
     @PostMapping("/")
@@ -28,6 +40,7 @@ public class QuestionsController {
     }
     @PostMapping("/result")
     public ResponseEntity<?> getResult(@RequestBody List<Questions> questionsSet) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Quiz quiz  = this.quizService.getQuiz(Long.parseLong(String.valueOf(questionsSet.get(0).getQuiz().getQuizId())));
         int correctAnswers=0;
         int marks=0;
@@ -46,6 +59,11 @@ public class QuestionsController {
         this.quizService.updateQuiz(quiz);
         quiz.setMarksAcquired(marks*100/quiz.getMaxMarks());
         quiz.setCorrectAnswers(correctAnswers);
+        User user = this.userService.getUser(authentication.getName());
+        QuizResponse quizResponse = new QuizResponse(user.getId(), quiz.getQuizId(),quiz.getTitle(),
+                quiz.getCategory().getTitle(), quiz.getMarksAcquired());
+        this.quizResponseService.addQuizResponse(quizResponse);
+
         return ResponseEntity.ok(quiz);
 
     }
