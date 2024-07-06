@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
+@CrossOrigin("*")
 public class AuthenticateController {
     @Autowired
     private AuthenticationManager authenticationManager;

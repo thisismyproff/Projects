@@ -23,6 +23,11 @@ public class UserController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
+    @GetMapping("/test")
+    public String test () {
+        return "Success";
+    }
+
     @PostMapping("/")
     public User createUser(@RequestBody User user) {
         user.setProfile("test.png");
